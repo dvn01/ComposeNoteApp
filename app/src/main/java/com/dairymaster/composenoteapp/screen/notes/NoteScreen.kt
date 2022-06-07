@@ -26,6 +26,7 @@ import com.dairymaster.composenoteapp.components.NoteButton
 import com.dairymaster.composenoteapp.components.NoteInputText
 import com.dairymaster.composenoteapp.data.NotesDataSource
 import com.dairymaster.composenoteapp.model.Note
+import com.dairymaster.composenoteapp.util.formatDate
 import java.time.format.DateTimeFormatter
 
 @Composable
@@ -65,14 +66,14 @@ fun NoteScreen(
                     bottom = 6.dp
                 ),
                 text = title, label = "Title", onTextChange = {
-                    if (it.all { char -> char.isLetter() || char.isWhitespace() }) title = it
+                    if (it.all { char -> char.isLetterOrDigit() || char.isWhitespace() }) title = it
                 })
             NoteInputText(modifier = Modifier
                 .padding(
                     top = 8.dp,
                     bottom = 6.dp
                 ), text = info, label = "Add note", onTextChange = {
-                if (it.all { char -> char.isLetter() || char.isWhitespace() }) info = it
+                if (it.all { char -> char.isLetterOrDigit() || char.isWhitespace() }) info = it
             })
 
             NoteButton(modifier = Modifier
@@ -126,14 +127,7 @@ onNoteClicked: (Note) -> Unit){
         ) {
             Text(text = note.title, style = MaterialTheme.typography.subtitle2)
             Text(text = note.info, style = MaterialTheme.typography.subtitle1)
-            Text(text = note.entryDate.format(DateTimeFormatter.ofPattern("EEE, d MMM")), style = MaterialTheme.typography.caption)
+            Text(text = formatDate(note.entryDate.time), style = MaterialTheme.typography.caption)
         }
-
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun NoteScreenPreview() {
-    // NoteScreen(notes = NotesDataSource().loadNotes(), onAddNote = {}, onRemoveNote = {})
 }
